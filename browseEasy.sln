@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "browseEasy.API", "browseEasy.API\browseEasy.API.csproj", "{B36FED62-1387-4246-910E-ECCF2FCD9A96}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "browseEasy.Tests", "browseEasy.Tests\browseEasy.Tests.csproj", "{E6DC408A-5C7B-4391-B1CF-9255DCD9252A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B36FED62-1387-4246-910E-ECCF2FCD9A96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B36FED62-1387-4246-910E-ECCF2FCD9A96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B36FED62-1387-4246-910E-ECCF2FCD9A96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B36FED62-1387-4246-910E-ECCF2FCD9A96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6DC408A-5C7B-4391-B1CF-9255DCD9252A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6DC408A-5C7B-4391-B1CF-9255DCD9252A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6DC408A-5C7B-4391-B1CF-9255DCD9252A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6DC408A-5C7B-4391-B1CF-9255DCD9252A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
