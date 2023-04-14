@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using browseEasy.API.Models;
+using browseEasy.API.DTOs;
 
 namespace browseEasy.API.Controllers
 {
@@ -20,11 +21,21 @@ namespace browseEasy.API.Controllers
             _context = context;
         }
 
-        // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUser()
+        public async Task<ActionResult<IEnumerable<UserResponse>>> GetUsers()
         {
-            return await _context.User.ToListAsync();
+            var findUsers = await _context.User.Include(user => user.Platforms).Include(user => user.Movies).Include(user => user.Genres).Include(user => user.Groups).ToListAsync();
+            var response = findUsers.Select(user => new UserResponse
+            {
+                Platforms = user.Platforms,
+                Type = user.Type,
+                IMDbRating = user.IMDbRating,
+                Genres = user.Genres,
+                Groups = user.Groups,
+                Movies = user.Movies
+            }).ToList();
+
+            return response;
         }
 
         // GET: api/Users/5
