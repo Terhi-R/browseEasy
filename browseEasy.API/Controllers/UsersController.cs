@@ -24,16 +24,40 @@ namespace browseEasy.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserResponse>>> GetUsers()
         {
-            var findUsers = await _context.User.Include(user => user.Platforms).Include(user => user.Movies).Include(user => user.Genres).Include(user => user.Groups).ToListAsync();
+            var findUsers = await _context.User
+                                    .Include(user => user.Platforms)
+                                    .Include(user => user.Movies)
+                                    .Include(user => user.Genres)
+                                    .Include(user => user.Groups)
+                                    .ToListAsync();
+
             var response = findUsers.Select(user => new UserResponse
             {
+                Id = user.Id,
                 Name = user.Name,
-                Platforms = user.Platforms,
+                Platforms = user.Platforms?.Select(platform => new PlatformResponse
+                                                    {
+                                                        Id = platform.Id,
+                                                        Name = platform.Name
+                                                    }).ToList(),
                 Type = user.Type,
                 IMDbRating = user.IMDbRating,
-                Genres = user.Genres,
-                Groups = user.Groups,
-                Movies = user.Movies
+                Genres = user.Genres?.Select(genre => new GenreResponse
+                                                {
+                                                    Id = genre.Id,
+                                                    Name = genre.Name
+                                                }).ToList(),
+                Groups = user.Groups?.Select(group => new GroupResponse
+                                                {
+                                                    Id = group.Id,
+                                                    Name = group.Name,
+                                                    UniqueKey = group.UniqueKey
+                                                }).ToList(),
+                Movies = user.Movies?.Select(movie => new MovieResponse
+                                                {
+                                                    Id = movie.Id,
+                                                    Name = movie.Name,
+                                                }).ToList(),
             }).ToList();
 
             return response;
@@ -56,32 +80,32 @@ namespace browseEasy.API.Controllers
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutUser(int id, UserRequest request)
         {
-            if (id != user.Id)
+            if (!UserExists(id))
             {
-                return BadRequest();
+                return NotFound();
             }
+
+            var user = await _context.User
+                                    .Include(user => user.Platforms)
+                                    .Include(user => user.Movies)
+                                    .Include(user => user.Genres)
+                                    .Include(user => user.Groups)
+                                    .FirstOrDefaultAsync();
+            
+            user!.Name = request.Name;
+            user.Platforms = request.Platforms;
+            user.Type = request.Type;
+            user.IMDbRating = request.IMDbRating;
+            user.Genres = request.Genres;
+            user.Groups = request.Groups;
 
             _context.Entry(user).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/Users
