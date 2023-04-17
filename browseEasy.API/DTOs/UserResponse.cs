@@ -1,4 +1,3 @@
-
 using browseEasy.API.Models;
 
 namespace browseEasy.API.DTOs;

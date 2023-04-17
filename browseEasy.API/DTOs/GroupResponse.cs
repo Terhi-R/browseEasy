@@ -2,11 +2,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace browseEasy.API.Models;
 
-public class Genre
+public class GroupResponse
 {
-    public int Id { get; set; }
-
     [Required]
     public string Name { get; set; }
-    public List<User>? Users { get; set; }
+    [Required]
+    public string UniqueKey { get; set; }
 }

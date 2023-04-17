@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDbContext")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString")));
 
 // Add services to the container.
 
