@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using browseEasy.API.Models;
 
 namespace browseEasy.API.DTOs;
@@ -5,6 +6,8 @@ namespace browseEasy.API.DTOs;
 public class UserResponse
 {
     public int Id { get; set; }
+    [Required]
+    public string Name { get; set; }
     public List<Platform>? Platforms { get; set; }
     public string? Type { get; set; }
     public double IMDbRating { get; set; }

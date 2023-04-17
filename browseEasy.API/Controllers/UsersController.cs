@@ -27,6 +27,7 @@ namespace browseEasy.API.Controllers
             var findUsers = await _context.User.Include(user => user.Platforms).Include(user => user.Movies).Include(user => user.Genres).Include(user => user.Groups).ToListAsync();
             var response = findUsers.Select(user => new UserResponse
             {
+                Name = user.Name,
                 Platforms = user.Platforms,
                 Type = user.Type,
                 IMDbRating = user.IMDbRating,
