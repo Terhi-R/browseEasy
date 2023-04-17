@@ -65,7 +65,7 @@ namespace browseEasy.API.Controllers
 
         // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<UserResponse>> GetUser(int id)
         {
             var user = await _context.User
                                     .Include(user => user.Platforms)
@@ -79,7 +79,36 @@ namespace browseEasy.API.Controllers
                 return NotFound();
             }
 
-            return user;
+            var userResponse = new UserResponse
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Platforms = user.Platforms?.Select(platform => new PlatformResponse
+                {
+                    Id = platform.Id,
+                    Name = platform.Name
+                }).ToList(),
+                Type = user.Type,
+                IMDbRating = user.IMDbRating,
+                Genres = user.Genres?.Select(genre => new GenreResponse
+                {
+                    Id = genre.Id,
+                    Name = genre.Name
+                }).ToList(),
+                Groups = user.Groups?.Select(group => new GroupResponse
+                {
+                    Id = group.Id,
+                    Name = group.Name,
+                    UniqueKey = group.UniqueKey
+                }).ToList(),
+                Movies = user.Movies?.Select(movie => new MovieResponse
+                {
+                    Id = movie.Id,
+                    Name = movie.Name,
+                }).ToList(),
+            };
+
+            return userResponse;
         }
 
         // PUT: api/Users/5
