@@ -9,10 +9,9 @@ using browseEasy.API.Models;
     {
         public ApplicationDbContext (DbContextOptions<ApplicationDbContext> options)
             : base(options)
-        {
-        }
-
-        public DbSet<browseEasy.API.Models.User> User { get; set; }
+        {}
+ 
+    public DbSet<browseEasy.API.Models.User> User { get; set; }
 
         public DbSet<browseEasy.API.Models.Group> Group { get; set; }
     }

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace browseEasy.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230417100730_InitialCreate")]
+    [Migration("20230417105617_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
