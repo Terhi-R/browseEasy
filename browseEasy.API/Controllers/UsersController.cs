@@ -67,9 +67,14 @@ namespace browseEasy.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-            var user = await _context.User.FindAsync(id);
+            var user = await _context.User
+                                    .Include(user => user.Platforms)
+                                    .Include(user => user.Movies)
+                                    .Include(user => user.Genres)
+                                    .Include(user => user.Groups)
+                                    .FirstOrDefaultAsync(userId => userId.Id == id);
 
-            if (user == null)
+            if (user is null)
             {
                 return NotFound();
             }
@@ -100,6 +105,7 @@ namespace browseEasy.API.Controllers
             user.IMDbRating = request.IMDbRating;
             user.Genres = request.Genres;
             user.Groups = request.Groups;
+            user.Movies = request.Movies;
 
             _context.Entry(user).State = EntityState.Modified;
 
