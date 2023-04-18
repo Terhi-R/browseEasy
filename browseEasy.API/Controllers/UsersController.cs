@@ -63,7 +63,6 @@ namespace browseEasy.API.Controllers
             return response;
         }
 
-        // GET: api/Users/5
         [HttpGet("{id}")]
         public async Task<ActionResult<UserResponse>> GetUser(int id)
         {
@@ -111,8 +110,6 @@ namespace browseEasy.API.Controllers
             return userResponse;
         }
 
-        // PUT: api/Users/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, UserRequest request)
         {
@@ -143,11 +140,11 @@ namespace browseEasy.API.Controllers
             return Ok();
         }
 
-        // POST: api/Users
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(UserRequest request)
         {
-           /*  var allUsersOfGenre = request.Genres.Select(genre => ) */
+            var allUsersOfGenre = request.Genres?.Select(genre => _context.Genre.ToList()).FirstOrDefault();
+
             var newUser = new User
             {
                 Id = 0,
@@ -155,7 +152,7 @@ namespace browseEasy.API.Controllers
                 Platforms = request.Platforms,
                 Type = request.Type,
                 IMDbRating = request.IMDbRating,
-/*                 Genres = request.Genres.Select(genre => {new Genre {Name = genre.Name, Users = };}), */
+                Genres = request.Genres,
                 Groups = request.Groups,
                 Movies = request.Movies
             };
