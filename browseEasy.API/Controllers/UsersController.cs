@@ -12,10 +12,8 @@ namespace browseEasy.API.Controllers
     {
         private readonly IUserRepository _repo;
 
-        public UsersController(IUserRepository repo)
-        {
-            _repo = repo;
-        }
+        public UsersController(IUserRepository repo) => _repo = repo;
+        
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserResponse>>> GetUsers()
@@ -51,11 +49,9 @@ namespace browseEasy.API.Controllers
         public async Task<ActionResult<User>> PostUser(UserRequest request)
         {
             var newUser = await _repo.PostUser(request);
-
             return CreatedAtAction(nameof(GetUser), new { id = newUser.Id }, newUser);
         }
 
-        // DELETE: api/Users/5
         [HttpDelete("{id}")]
         public IActionResult DeleteUser(int id)
         {
@@ -67,6 +63,5 @@ namespace browseEasy.API.Controllers
             _repo.DeleteUser(id);
             return Ok();
         }
-
     }
 }
