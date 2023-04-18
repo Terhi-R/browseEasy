@@ -14,7 +14,6 @@ namespace browseEasy.API.Controllers
 
         public UsersController(IUserRepository repo) => _repo = repo;
         
-
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserResponse>>> GetUsers()
         {
