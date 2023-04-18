@@ -11,7 +11,7 @@ using browseEasy.API.Models;
             : base(options)
         {}
  
-    public DbSet<browseEasy.API.Models.User> User { get; set; }
+        public DbSet<browseEasy.API.Models.User> User { get; set; }
 
         public DbSet<browseEasy.API.Models.Group> Group { get; set; }
 
