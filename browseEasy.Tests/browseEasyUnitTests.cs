@@ -358,4 +358,89 @@ public abstract class browseEasyUnitTests
             Assert.Equal(4, getSecondUser.Value!.Id);
         }
     }
+
+    [Fact]
+    public void PUT_PutUser_edits_users()
+    {
+        using (var context = new ApplicationDbContext(ContextOptions))
+        {
+            //arrange
+            var repo = new UserRepository(context);
+            var controller = new UsersController(repo);
+            var editHilla = new UserRequest
+                            {
+                                Name = "Hilla",
+                                Platforms = new List<Platform>
+                                                {
+                                                    new Platform
+                                                    {
+                                                        Name = "Netflix"
+                                                    }
+                                                },
+                                Type = "Movie",
+                                IMDbRating = 7.8,
+                                Groups = new List<Group>
+                                            {
+                                                new Group
+                                                {
+                                                    Name = "Wine and chill",
+                                                    UniqueKey = "myChillNight@"
+                                                }
+                                            },
+                                Genres = new List<Genre>
+                                            {
+                                                new Genre
+                                                {
+                                                    Name = "Romantic"
+                                                },
+                                                new Genre
+                                                {
+                                                    Name = "Comedy"
+                                                }
+                                            },
+                                Movies = new List<Movie>
+                                            {
+                                                new Movie
+                                                {
+                                                    Name = "Everything Everywhere All at Once"
+                                                }
+                                            }
+                            };
+
+            //act
+            var postUser = controller.PostUser(newUser);
+            var unModifiedUser = controller.GetUser(3);
+            var putUser = controller.PutUser(3, editHilla);
+            var modifiedUser = controller.GetUser(3);
+
+            //assert
+            Assert.Equal("Hilla", unModifiedUser.Value!.Name);
+            Assert.Equal("Hilla", modifiedUser.Value!.Name);
+            Assert.Equal(3, unModifiedUser.Value!.Id);
+            Assert.Equal(3, modifiedUser.Value!.Id);
+            Assert.Equal("Viaplay", unModifiedUser.Value!.Platforms![0].Name);
+            Assert.Equal("Netflix", modifiedUser.Value!.Platforms![0].Name);
+            Assert.Equal(6, unModifiedUser.Value!.IMDbRating);
+            Assert.Equal(7.8, modifiedUser.Value!.IMDbRating);
+        }
+    }
+
+    [Fact]
+    public void DELETE_DeleteUser_deletes_users()
+    {
+        using (var context = new ApplicationDbContext(ContextOptions))
+        {
+            //arrange
+            var repo = new UserRepository(context);
+            var controller = new UsersController(repo);
+
+            //act
+            var postUser = controller.PostUser(newUser);
+            var deleteUser = controller.DeleteUser(3);
+            var getUser = controller.GetUser(3);
+
+            //assert
+            Assert.Null(getUser.Value);
+        }
+    }
 }
