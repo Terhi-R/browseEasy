@@ -1,7 +1,7 @@
 using browseEasy.API.Controllers;
 using browseEasy.API.DTOs;
 using browseEasy.API.Models;
-using browseEasy.API.Data;
+using browseEasy.API.Repositories;
 
 namespace browseEasy.Tests;
 
