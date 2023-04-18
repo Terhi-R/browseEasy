@@ -1,26 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using browseEasy.API.Models;
+using browseEasy.API.Data;
 
 namespace browseEasy.API.Controllers;
 
-    [Route("api/[controller]")]
-    [ApiController]
-    public class PlatformsController : ControllerBase
+[Route("api/[controller]")]
+[ApiController]
+public class PlatformsController : ControllerBase
+{
+    private IRepository<Platform> _repo;
+
+    public PlatformsController(IRepository<Platform> repo) => _repo = repo;
+
+    // GET: api/Platforms
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Platform>>> GetPlatforms()
     {
-        private readonly ApplicationDbContext _context;
-
-        public PlatformsController(ApplicationDbContext context) => _context = context;
-
-        // GET: api/Platforms
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Platform>>> GetPlatforms()
-        {
-            return await _context.Platform.ToListAsync();
-        }
+        return await _repo.GetAll();
     }
+}

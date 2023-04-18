@@ -1,9 +1,8 @@
 using browseEasy.API.DTOs;
 using browseEasy.API.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace browseEasy.API.Repositories;
+namespace browseEasy.API.Data;
 
 public class UserRepository : IUserRepository
 {

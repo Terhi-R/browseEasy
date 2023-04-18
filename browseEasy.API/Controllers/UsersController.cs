@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using browseEasy.API.Models;
 using browseEasy.API.DTOs;
-using browseEasy.API.Repositories;
+using browseEasy.API.Data;
 
 namespace browseEasy.API.Controllers
 {
@@ -10,7 +9,7 @@ namespace browseEasy.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IUserRepository _repo;
+        private IUserRepository _repo;
 
         public UsersController(IUserRepository repo) => _repo = repo;
         

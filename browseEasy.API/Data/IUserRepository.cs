@@ -1,7 +1,7 @@
 using browseEasy.API.DTOs;
 using browseEasy.API.Models;
 
-namespace browseEasy.API.Repositories;
+namespace browseEasy.API.Data;
 public interface IUserRepository
 {
     Task<List<UserResponse>> GetUsers();

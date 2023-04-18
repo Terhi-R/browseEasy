@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using browseEasy.API.Models;
+using browseEasy.API.Data;
 
 namespace browseEasy.API.Controllers;
 
@@ -13,14 +8,14 @@ namespace browseEasy.API.Controllers;
     [ApiController]
     public class GenresController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+    private IRepository<Genre> _repo;
 
-        public GenresController(ApplicationDbContext context) => _context = context;
+    public GenresController(IRepository<Genre> repo) => _repo = repo;
 
         // GET: api/Genres
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Genre>>> GetGenre()
+        public async Task<ActionResult<IEnumerable<Genre>>> GetGenres()
         {
-            return await _context.Genre.ToListAsync();
+            return await _repo.GetAll();
         }
     }
