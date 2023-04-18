@@ -1,7 +1,7 @@
 using browseEasy.API.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace browseEasy.API.Data;
+namespace browseEasy.API.Repositories;
 
 public class PlatformRepository : IRepository<Platform>
 {

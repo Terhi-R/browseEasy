@@ -2,7 +2,7 @@ using browseEasy.API.DTOs;
 using browseEasy.API.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace browseEasy.API.Data;
+namespace browseEasy.API.Repositories;
 
 public class UserRepository : IUserRepository
 {

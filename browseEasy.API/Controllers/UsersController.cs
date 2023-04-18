@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using browseEasy.API.Models;
 using browseEasy.API.DTOs;
-using browseEasy.API.Data;
+using browseEasy.API.Repositories;
 
 namespace browseEasy.API.Controllers
 {

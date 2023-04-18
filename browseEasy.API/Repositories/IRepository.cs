@@ -1,4 +1,4 @@
-namespace browseEasy.API.Data;
+namespace browseEasy.API.Repositories;
 
 public interface IRepository<T> where T : class
 {

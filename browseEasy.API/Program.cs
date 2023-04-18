@@ -1,7 +1,6 @@
-using browseEasy.API.Data;
+using browseEasy.API.Repositories;
 using browseEasy.API.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
