@@ -110,6 +110,40 @@ namespace browseEasy.API.Controllers
             return userResponse;
         }
 
+        public async Task<User> newUserValues(UserRequest request)
+        {
+            var allPlatforms = await _context.Platform.ToListAsync();
+            var allGenres = await _context.Genre.ToListAsync();
+            var allGroups = await _context.Group.ToListAsync();
+            var allMovies = await _context.Movie.ToListAsync();
+
+            var newUser = new User
+            {
+                Id = 0,
+                Name = request.Name,
+                Platforms = request.Platforms?.Select(platform => allPlatforms.Select(p => p.Name == platform.Name).FirstOrDefault()
+                                                        ? allPlatforms.Where(p => p.Name == platform.Name).FirstOrDefault()
+                                                        : platform)
+                                                .ToList()!,
+                Type = request.Type,
+                IMDbRating = request.IMDbRating,
+                Genres = request.Genres?.Select(genre => allGenres.Select(g => g.Name == genre.Name).FirstOrDefault()
+                                                        ? allGenres.Where(g => g.Name == genre.Name).FirstOrDefault()
+                                                        : genre)
+                                                .ToList()!,
+                Groups = request.Groups?.Select(group => allGroups.Select(g => g.Name == group.Name).FirstOrDefault()
+                                                        ? allGroups.Where(g => g.Name == group.Name).FirstOrDefault()
+                                                        : group)
+                                                .ToList()!,
+                Movies = request.Movies?.Select(movie => allMovies.Select(m => m.Name == movie.Name).FirstOrDefault()
+                                                        ? allMovies.Where(m => m.Name == movie.Name).FirstOrDefault()
+                                                        : movie)
+                                                .ToList()!
+            };
+
+            return newUser;
+        }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, UserRequest request)
         {
@@ -118,10 +152,7 @@ namespace browseEasy.API.Controllers
                 return NotFound();
             }
 
-            var allPlatforms = await _context.Platform.ToListAsync();
-            var allGenres = await _context.Genre.ToListAsync();
-            var allGroups = await _context.Group.ToListAsync();
-            var allMovies = await _context.Movie.ToListAsync();
+            var createUser = await newUserValues(request);
   
             var user = await _context.User
                                     .Include(user => user.Platforms)
@@ -130,25 +161,13 @@ namespace browseEasy.API.Controllers
                                     .Include(user => user.Groups)
                                     .FirstOrDefaultAsync();
             
-            user!.Name = request.Name;
-            user.Platforms = request.Platforms?.Select(platform => allPlatforms.Select(p => p.Name == platform.Name).FirstOrDefault()
-                                                        ? allPlatforms.Where(p => p.Name == platform.Name).FirstOrDefault()
-                                                        : platform)
-                                                .ToList()!;
-            user.Type = request.Type;
-            user.IMDbRating = request.IMDbRating;
-            user.Genres = request.Genres?.Select(genre => allGenres.Select(g => g.Name == genre.Name).FirstOrDefault() 
-                                                        ? allGenres.Where(g => g.Name == genre.Name).FirstOrDefault()
-                                                        : genre)
-                                                .ToList()!;
-            user.Groups = request.Groups?.Select(group => allGroups.Select(g => g.Name == group.Name).FirstOrDefault()
-                                                        ? allGroups.Where(g => g.Name == group.Name).FirstOrDefault()
-                                                        : group)
-                                                .ToList()!;
-            user.Movies = request.Movies?.Select(movie => allMovies.Select(m => m.Name == movie.Name).FirstOrDefault()
-                                                        ? allMovies.Where(m => m.Name == movie.Name).FirstOrDefault()
-                                                        : movie)
-                                                .ToList()!;
+            user!.Name = createUser.Name;
+            user.Platforms = createUser.Platforms;
+            user.Type = createUser.Type;
+            user.IMDbRating = createUser.IMDbRating;
+            user.Genres = createUser.Genres;
+            user.Groups = createUser.Groups;
+            user.Movies = createUser.Movies;
 
             _context.Entry(user).State = EntityState.Modified;
 
@@ -160,17 +179,7 @@ namespace browseEasy.API.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(UserRequest request)
         {
-            var newUser = new User
-            {
-                Id = 0,
-                Name = request.Name,
-                Platforms = request.Platforms,
-                Type = request.Type,
-                IMDbRating = request.IMDbRating,
-                Genres = request.Genres,
-                Groups = request.Groups,
-                Movies = request.Movies
-            };
+            var newUser = await newUserValues(request);
 
             var addedUser = _context.User.Add(newUser);
             await _context.SaveChangesAsync();
