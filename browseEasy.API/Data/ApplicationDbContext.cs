@@ -14,4 +14,10 @@ using browseEasy.API.Models;
     public DbSet<browseEasy.API.Models.User> User { get; set; }
 
         public DbSet<browseEasy.API.Models.Group> Group { get; set; }
+
+        public DbSet<browseEasy.API.Models.Genre> Genre { get; set; }
+
+        public DbSet<browseEasy.API.Models.Movie> Movie { get; set; }
+
+        public DbSet<browseEasy.API.Models.Platform> Platform { get; set; }
     }

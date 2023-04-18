@@ -144,14 +144,26 @@ namespace browseEasy.API.Controllers
         }
 
         // POST: api/Users
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<User>> PostUser(UserRequest request)
         {
-            _context.User.Add(user);
+           /*  var allUsersOfGenre = request.Genres.Select(genre => ) */
+            var newUser = new User
+            {
+                Id = 0,
+                Name = request.Name,
+                Platforms = request.Platforms,
+                Type = request.Type,
+                IMDbRating = request.IMDbRating,
+/*                 Genres = request.Genres.Select(genre => {new Genre {Name = genre.Name, Users = };}), */
+                Groups = request.Groups,
+                Movies = request.Movies
+            };
+
+            var addedUser = _context.User.Add(newUser);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            return CreatedAtAction(nameof(GetUser), new { id = addedUser.Entity.Id }, addedUser);
         }
 
         // DELETE: api/Users/5
