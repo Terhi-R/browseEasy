@@ -21,14 +21,14 @@ namespace browseEasy.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserResponse>> GetUser(int id)
+        public ActionResult<UserResponse> GetUser(int id)
         {
             if (!_repo.UserExists(id))
             {
                 return NotFound();
             }
 
-            return await _repo.GetUser(id);
+            return _repo.GetUser(id);
         }
 
 
@@ -48,7 +48,7 @@ namespace browseEasy.API.Controllers
         public async Task<ActionResult<User>> PostUser(UserRequest request)
         {
             var newUser = await _repo.PostUser(request);
-            return CreatedAtAction(nameof(GetUser), new { id = newUser.Id }, newUser);
+            return CreatedAtAction(nameof(GetUser), newUser.Id);
         }
 
         [HttpDelete("{id}")]

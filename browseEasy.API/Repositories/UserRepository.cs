@@ -17,10 +17,16 @@ public class UserRepository : IUserRepository
         return allUsers.Select(user => createUserResponse(user)).ToList();
     }
 
-    public async Task<UserResponse> GetUser(int id)
+    public UserResponse GetUser(int id)
     {
-        var user = await listAllUsers();
-        return createUserResponse(user.FirstOrDefault(u => u.Id == id)!);
+        var user = _context.User
+                                .Include(user => user.Platforms)
+                                .Include(user => user.Movies)
+                                .Include(user => user.Genres)
+                                .Include(user => user.Groups)
+                                .FirstOrDefault(u => u.Id == id);
+
+        return createUserResponse(user!);
     }
 
     public async Task<User> PutUser(int id, UserRequest request)
@@ -78,34 +84,34 @@ public class UserRepository : IUserRepository
             Name = user.Name,
             Platforms = user.Platforms?
                             .Select(platform => new PlatformResponse
-                                                {
-                                                    Id = platform.Id,
-                                                    Name = platform.Name
-                                                })
+                            {
+                                Id = platform.Id,
+                                Name = platform.Name
+                            })
                             .ToList(),
             Type = user.Type,
             IMDbRating = user.IMDbRating,
             Genres = user.Genres?
                             .Select(genre => new GenreResponse
-                                        {
-                                            Id = genre.Id,
-                                            Name = genre.Name
-                                        })
+                            {
+                                Id = genre.Id,
+                                Name = genre.Name
+                            })
                             .ToList(),
             Groups = user.Groups?
                             .Select(group => new GroupResponse
-                                            {
-                                                Id = group.Id,
-                                                Name = group.Name,
-                                                UniqueKey = group.UniqueKey
-                                            })
+                            {
+                                Id = group.Id,
+                                Name = group.Name,
+                                UniqueKey = group.UniqueKey
+                            })
                             .ToList(),
             Movies = user.Movies?
                             .Select(movie => new MovieResponse
-                                            {
-                                                Id = movie.Id,
-                                                Name = movie.Name,
-                                            })
+                            {
+                                Id = movie.Id,
+                                Name = movie.Name,
+                            })
                             .ToList(),
         };
     }
@@ -118,7 +124,6 @@ public class UserRepository : IUserRepository
 
         var newUser = new User
         {
-            Id = 0,
             Name = request.Name,
             Platforms = request.Platforms?
                                 .Select(platform => allPlatforms
