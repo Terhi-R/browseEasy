@@ -14,19 +14,23 @@ export const Header: FC<HeaderProps> = ({openForm}) => {
     const login = () => {
     signInWithGoogle();
     auth.onAuthStateChanged(user => {
-        if (user !== null) {
+        console.log(user?.uid);
+         if (user !== null && user.displayName !== null && user.uid !== "") {
+            console.log(user.uid + 'inside if');
             const newUser: Partial<IUser> = {
+                name: user.displayName,
                 loginId: user.uid
             }
+            console.log("I'm here");
             postUsers(newUser);
-        }
+        } 
     })
     openForm();
     }
 
     return (
         <>
-       { users.map(user => user.name.split('r')[0])}
+       {users.map(user => user.loginId)}
         <p>Home!</p>
         <button onClick={login}>Get started</button>
         </>

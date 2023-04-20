@@ -51,8 +51,8 @@ public class UserRepository : IUserRepository
     public async Task<User?> PostUser(UserRequest request)
     {
         var users = await GetUsers();
-        var existingUser = users.Select(user => user.LoginId == request.LoginId).FirstOrDefault();
-        if (existingUser) return null;
+        var existingUser = users.Where(user => user.LoginId == request.LoginId).FirstOrDefault();
+        if (existingUser is not null) return null;
         var newUser = await newUserValues(request);
         var addedUser = _context.User.Add(newUser);
         await _context.SaveChangesAsync();

@@ -51,7 +51,7 @@ namespace browseEasy.API.Controllers
             {
                 return BadRequest();
             }
-            return CreatedAtAction(nameof(GetUser), newUser.Id);
+            return CreatedAtAction(nameof(GetUser), new { id = newUser.Id }, newUser);
         }
 
         [HttpDelete("{id}")]
