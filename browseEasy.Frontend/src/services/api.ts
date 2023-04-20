@@ -25,6 +25,7 @@ export const postUsers = async (newUser: Partial<IUser>) => {
         body: JSON.stringify(newUser),
         headers: {
         "content-type": "application/json",
+        "access-control-allow-origin": "*",
         }
     }
   )
@@ -40,6 +41,7 @@ export const putUsers = async (id: number, editedUser: Partial<IUser>) => {
         body: JSON.stringify(editedUser),
         headers: {
         "content-type": "application/json",
+        "access-control-allow-origin": "*",
         }
     }
   )
