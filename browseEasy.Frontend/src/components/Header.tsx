@@ -1,4 +1,4 @@
-import { FC, useContext } from "react";
+import { FC, useContext, useState } from "react";
 import { auth, signInWithGoogle } from '../services/firebase';
 import { UserContext } from "../App";
 import { IUser } from "../services/interfaces";
@@ -14,16 +14,19 @@ export const Header: FC<HeaderProps> = ({openForm}) => {
     const login = () => {
     signInWithGoogle();
     auth.onAuthStateChanged(user => {
-        if (user !== null) {
+        if (user !== null && users !== null) {
             users.map(u => {
-                if (u.name !== user.displayName && user.displayName !== null && u.name !== null) {
+                if (u.name === user.displayName) {
+                    return;
+                }
+            })
+        }
+        if (user !== null && user.displayName !== null) {
                     const newUser: Partial<IUser> = {
                         name: user.displayName
                     }
                     postUsers(newUser);
                 }
-            })
-        }
     })
     openForm();
     }
