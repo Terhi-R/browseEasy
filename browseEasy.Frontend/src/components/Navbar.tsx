@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
-import { Settings } from './Settings';
-import { About } from './About';
 
 export const Navbar = () => {
     return (
         <>
-        <Link to=""/>
-        <Settings/>
-        <About/>
+        <div className="navbar">
+        <Link to="/">Home</Link>
+        <Link to="/settings">Settings</Link>
+        <Link to="/about">About</Link>
+        </div>
         </>
     )
 }
