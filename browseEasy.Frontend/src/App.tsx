@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from 'react';
 import './App.css'
-import { getUsers } from './services/api';
-import { IUser } from './services/interfaces';
+import { getGroups, getUsers } from './services/api';
+import { IGroup, IUser } from './services/interfaces';
 import { Navbar } from './components/Navbar';
 import { PageController } from './components/PageController';
 import { Navigate, Route, Routes } from 'react-router-dom';

@@ -12,7 +12,7 @@ export const PreferenceForm: FC<PreferenceFormProps> = ({openForm}) => {
     return (
         <>
         <p>Preferences are open</p>
-        <button onClick={homePage}>Click me!</button>
+        <button onClick={homePage}>Let's go!</button>
         </>
     )
 }

@@ -1,4 +1,4 @@
-import { IUser } from "./interfaces";
+import { IGroup, IUser } from "./interfaces";
 
 export const getUsers = async () => {
   const users: IUser[] = await fetch(
@@ -54,4 +54,13 @@ export const deleteUsers = async (id: number) => {
         method: "DELETE"
     }
   )
+};
+
+export const getGroups = async () => {
+  const groups: IGroup[] = await fetch(
+    "https://browseeasyapi.azurewebsites.net/api/Groups"
+  )
+    .then((response) => response.json())
+    .then((data) => data);
+  return groups;
 };
