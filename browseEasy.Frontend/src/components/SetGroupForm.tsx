@@ -48,7 +48,7 @@ export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
     <>
        {googleUser !== null && 
         <>
-        <h2>Hi {googleUser.displayName}! Let's get you set up.</h2>
+        <h2>Hi {googleUser.displayName.split(' ')[0]}! Let's get you set up.</h2>
         <form className="group-form" onSubmit={handleSubmit}>
             <label>Your name</label>
             <input placeholder="[Name]"></input>
