@@ -7,6 +7,7 @@ import { PageController } from './components/PageController';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Settings } from './components/Settings';
 import { About } from './components/About';
+import { Header } from './components/Header';
 
 function App() {
 const [users, setUsers] = useState<IUser[]>([]);
@@ -16,7 +17,7 @@ const userContext = createContext<IUser[]>([]);
     const users = await getUsers();
     setUsers(users);
   }
-  
+
   useEffect(() => {
     getallUsers();
   },[])

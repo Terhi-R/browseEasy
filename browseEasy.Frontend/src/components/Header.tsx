@@ -1,8 +1,18 @@
+import { FC } from "react";
 
-export const Header = () => {
+type HeaderProps = {
+    openForm: () => void
+}
+
+export const Header: FC<HeaderProps> = ({openForm}) => {
+    const homePage = () => {
+        openForm();
+    }
+
     return (
         <>
-        <p>Hello!</p>
+        <p>Home!</p>
+        <button onClick={homePage}>Click me!</button>
         </>
     )
 }

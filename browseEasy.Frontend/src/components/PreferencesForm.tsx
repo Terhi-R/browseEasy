@@ -1,7 +1,18 @@
+import { FC } from "react"
 
-export const PreferenceForm = () => {
+type PreferenceFormProps = {
+    openForm: () => void
+}
+
+export const PreferenceForm: FC<PreferenceFormProps> = ({openForm}) => {
+    const homePage = () => {
+        openForm();
+    }
+
     return (
         <>
+        <p>Preferences are open</p>
+        <button onClick={homePage}>Click me!</button>
         </>
     )
 }
