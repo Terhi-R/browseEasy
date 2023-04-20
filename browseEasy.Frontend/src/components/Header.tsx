@@ -14,19 +14,12 @@ export const Header: FC<HeaderProps> = ({openForm}) => {
     const login = () => {
     signInWithGoogle();
     auth.onAuthStateChanged(user => {
-        if (user !== null && users !== null) {
-            users.map(u => {
-                if (u.name === user.displayName) {
-                    return;
-                }
-            })
+        if (user !== null) {
+            const newUser: Partial<IUser> = {
+                loginId: user.uid
+            }
+            postUsers(newUser);
         }
-        if (user !== null && user.displayName !== null) {
-                    const newUser: Partial<IUser> = {
-                        name: user.displayName
-                    }
-                    postUsers(newUser);
-                }
     })
     openForm();
     }

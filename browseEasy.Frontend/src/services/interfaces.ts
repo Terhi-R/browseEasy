@@ -1,6 +1,7 @@
 export interface IUser {
     id: number,
     name: string,
+    loginId: string,
     platforms: IPlatform[],
     type: string,
     IMDbRating: number,
