@@ -51,14 +51,14 @@ namespace browseEasy.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
             if (!_repo.UserExists(id))
             {
                 return NotFound();
             }
             
-            _repo.DeleteUser(id);
+            await _repo.DeleteUser(id);
             return Ok();
         }
     }

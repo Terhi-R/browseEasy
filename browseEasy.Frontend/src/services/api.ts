@@ -2,7 +2,8 @@ import { IGroup, IUser } from "./interfaces";
 
 export const getUsers = async () => {
   const users: IUser[] = await fetch(
-    "https://browseeasyapi.azurewebsites.net/api/Users"
+/*     "https://browseeasyapi.azurewebsites.net/api/Users" */
+    "https://localhost:7233/api/Users"
   )
     .then((response) => response.json())
     .then((data) => data);

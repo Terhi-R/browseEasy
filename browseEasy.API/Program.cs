@@ -24,14 +24,14 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
 }
-    app.UseSwagger();
-    app.UseSwaggerUI();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseCors(policy =>
   {
       policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
+            .AllowAnyMethod()
+            .AllowAnyHeader();
   });
 
 app.UseHttpsRedirection();

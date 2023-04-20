@@ -1,5 +1,6 @@
 using browseEasy.API.DTOs;
 using browseEasy.API.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace browseEasy.API.Repositories;
@@ -54,9 +55,10 @@ public class UserRepository : IUserRepository
         return addedUser.Entity;
     }
 
-    public async void DeleteUser(int id)
+    public async Task DeleteUser(int id)
     {
         var user = await _context.User.FindAsync(id);
+        if (user == null) return;
         _context.User.Remove(user!);
         await _context.SaveChangesAsync();
     }

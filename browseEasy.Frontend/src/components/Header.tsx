@@ -16,7 +16,7 @@ export const Header: FC<HeaderProps> = ({openForm}) => {
     auth.onAuthStateChanged(user => {
         if (user !== null) {
             users.map(u => {
-                if (u.name !== user.displayName && user.displayName !== null) {
+                if (u.name !== user.displayName && user.displayName !== null && u.name !== null) {
                     const newUser: Partial<IUser> = {
                         name: user.displayName
                     }
