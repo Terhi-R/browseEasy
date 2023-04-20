@@ -9,6 +9,7 @@ type SetGroupFormProps = {
 
 export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
     const [groups, setGroups] = useState<IGroup[]>([]);
+    const [foundGroup, setFoundGroup] = useState<boolean>(false);
     
     const homePage = () => {
         openForm();
@@ -17,6 +18,15 @@ export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
     const getallGroups = async() => {
         const groups = await getGroups();
         setGroups(groups);
+    }
+
+    const handleChange = (event: any) => {
+        const found = {value: event.target.value};
+        groups.map(group => {if (group.name == found.value) {
+            setFoundGroup(true);
+        } else {
+            setFoundGroup(false);
+        }})
     }
 
     useEffect(() => {
@@ -30,11 +40,19 @@ export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
             <label>Your name</label>
             <input placeholder="[Name]"></input>
             <label>Your group name:</label>
-            <input></input>
+            <input onChange={handleChange}></input>
+            {foundGroup && 
+            <>
             <label>We already found one! Do you have the unique key?</label>
             <input></input>
+            </>
+            }
+            {!foundGroup && 
+            <>
             <label>Create unique group keyword:</label>
             <input></input>
+            </>
+            }
         </form>
         <button onClick={homePage}>Go to preferences</button>
         </>
