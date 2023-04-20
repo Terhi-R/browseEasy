@@ -9,9 +9,10 @@ import { Settings } from './components/Settings';
 import { About } from './components/About';
 import { Header } from './components/Header';
 
+export const UserContext = createContext<IUser[]>([]);
+
 function App() {
 const [users, setUsers] = useState<IUser[]>([]);
-const userContext = createContext<IUser[]>([]);
 
   const getallUsers = async() => {
     const users = await getUsers();
@@ -23,7 +24,7 @@ const userContext = createContext<IUser[]>([]);
   },[])
 
   return (
-    <userContext.Provider value={users}>
+    <UserContext.Provider value={users}>
         <Navbar/>
         <Routes location={location} key={location.pathname}>
           <Route
@@ -43,7 +44,7 @@ const userContext = createContext<IUser[]>([]);
             element={<Navigate to="/" replace={true} />}
           ></Route>
         </Routes>
-    </userContext.Provider>
+    </UserContext.Provider>
   )
 }
 

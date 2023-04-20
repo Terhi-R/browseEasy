@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { signInWithGoogle } from '../services/firebase';
 
 type HeaderProps = {
     openForm: () => void
@@ -6,7 +7,7 @@ type HeaderProps = {
 
 export const Header: FC<HeaderProps> = ({openForm}) => {
     const login = () => {
-        //add here Google Login
+    signInWithGoogle();
     openForm();
     }
 
