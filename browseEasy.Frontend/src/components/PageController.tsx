@@ -34,7 +34,7 @@ export const PageController = () => {
         {home && <Header openForm={groupForm}/>}
         {!home && !openPreferenceForm && !openPickingGallery && <SetGroupForm openForm={preferenceForm}/>}
         {!home && openPreferenceForm && !openPickingGallery && <PreferenceForm openForm={pickingGallery}/>}
-        {!home && !openPreferenceForm && openPickingGallery && <PickingGallery openForm={() => {groupForm(); setHome(true);}}/>}
+        {!home && !openPreferenceForm && openPickingGallery && <PickingGallery />}
         </>
     )
 }

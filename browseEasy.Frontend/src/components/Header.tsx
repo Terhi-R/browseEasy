@@ -5,14 +5,15 @@ type HeaderProps = {
 }
 
 export const Header: FC<HeaderProps> = ({openForm}) => {
-    const homePage = () => {
-        openForm();
+    const login = () => {
+        //add here Google Login
+    openForm();
     }
 
     return (
         <>
         <p>Home!</p>
-        <button onClick={homePage}>Click me!</button>
+        <button onClick={login}>Get started</button>
         </>
     )
 }
