@@ -48,9 +48,11 @@ public class UserRepository : IUserRepository
         return user;
     }
 
-    public async Task<User> PostUser(UserRequest request)
+    public async Task<User?> PostUser(UserRequest request)
     {
         var users = await GetUsers();
+        var existingUser = users.Select(user => user.LoginId == request.LoginId).FirstOrDefault();
+        if (existingUser) return null;
         var newUser = await newUserValues(request);
         var addedUser = _context.User.Add(newUser);
         await _context.SaveChangesAsync();

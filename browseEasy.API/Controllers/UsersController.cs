@@ -47,6 +47,10 @@ namespace browseEasy.API.Controllers
         public async Task<ActionResult<User>> PostUser(UserRequest request)
         {
             var newUser = await _repo.PostUser(request);
+            if (newUser is null)
+            {
+                return BadRequest();
+            }
             return CreatedAtAction(nameof(GetUser), newUser.Id);
         }
 
