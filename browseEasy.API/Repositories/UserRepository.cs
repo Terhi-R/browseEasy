@@ -35,6 +35,7 @@ public class UserRepository : IUserRepository
         var createUser = await newUserValues(request);
 
         user!.Name = createUser.Name;
+        user!.LoginId = createUser.LoginId;
         user.Platforms = createUser.Platforms;
         user.Type = createUser.Type;
         user.IMDbRating = createUser.IMDbRating;
@@ -49,6 +50,7 @@ public class UserRepository : IUserRepository
 
     public async Task<User> PostUser(UserRequest request)
     {
+        var users = await GetUsers();
         var newUser = await newUserValues(request);
         var addedUser = _context.User.Add(newUser);
         await _context.SaveChangesAsync();
@@ -83,6 +85,7 @@ public class UserRepository : IUserRepository
         {
             Id = user.Id,
             Name = user.Name,
+            LoginId = user.LoginId,
             Platforms = user.Platforms?
                             .Select(platform => new PlatformResponse
                             {
@@ -126,6 +129,7 @@ public class UserRepository : IUserRepository
         var newUser = new User
         {
             Name = request.Name,
+            LoginId = request.LoginId,
             Platforms = request.Platforms?
                                 .Select(platform => allPlatforms
                                                         .Select(p => p.Name == platform.Name)
