@@ -47,18 +47,22 @@ namespace browseEasy.API.Controllers
         public async Task<ActionResult<User>> PostUser(UserRequest request)
         {
             var newUser = await _repo.PostUser(request);
-            return CreatedAtAction(nameof(GetUser), newUser.Id);
+            if (newUser is null)
+            {
+                return BadRequest();
+            }
+            return CreatedAtAction(nameof(GetUser), new { id = newUser.Id }, newUser);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
             if (!_repo.UserExists(id))
             {
                 return NotFound();
             }
             
-            _repo.DeleteUser(id);
+            await _repo.DeleteUser(id);
             return Ok();
         }
     }

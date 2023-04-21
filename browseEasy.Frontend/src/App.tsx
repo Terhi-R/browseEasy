@@ -1,34 +1,50 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { createContext, useEffect, useState } from 'react';
 import './App.css'
+import { getGroups, getUsers } from './services/api';
+import { IGroup, IUser } from './services/interfaces';
+import { Navbar } from './components/Navbar';
+import { PageController } from './components/PageController';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { Settings } from './components/Settings';
+import { About } from './components/About';
+import { Header } from './components/Header';
+
+export const UserContext = createContext<IUser[]>([]);
 
 function App() {
-  const [count, setCount] = useState(0)
+const [users, setUsers] = useState<IUser[]>([]);
+
+  const getallUsers = async() => {
+    const users = await getUsers();
+    setUsers(users);
+  }
+
+  useEffect(() => {
+    getallUsers();
+  },[])
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
+    <UserContext.Provider value={users}>
+        <Navbar/>
+        <Routes location={location} key={location.pathname}>
+          <Route
+            path="/"
+            element={<PageController />}
+          ></Route>
+          <Route 
+            path="/settings" 
+            element={<Settings />}
+          ></Route>
+          <Route
+            path="/about"
+            element={<About />}
+          ></Route>
+          <Route 
+            path="*"
+            element={<Navigate to="/" replace={true} />}
+          ></Route>
+        </Routes>
+    </UserContext.Provider>
   )
 }
 
