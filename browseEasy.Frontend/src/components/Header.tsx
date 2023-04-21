@@ -10,8 +10,12 @@ type HeaderProps = {
 }
 
 export const Header: FC<HeaderProps> = ({openForm, activeUser}) => {
+    const [user, setUser] = useState<string>();
+
     const login = () => {
-    signInWithGoogle();
+    if (user === null) {
+        signInWithGoogle();
+    }
     auth.onAuthStateChanged(user => {
          if (user !== null && user.displayName !== null && user.uid !== "") {
             const newUser: Partial<IUser> = {
@@ -24,6 +28,7 @@ export const Header: FC<HeaderProps> = ({openForm, activeUser}) => {
                 name: user.displayName
             }
             activeUser(setActiveUser);
+            setUser(setActiveUser.name);
         }
         openForm();
     })
