@@ -41,7 +41,6 @@ export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
         };
 
         if (matchingGroup) {
-            console.log("found Group");
             groups.map(group => {
                 if (group.uniqueKey == target.uniqueKey.value) {
                     users.map(user => {
@@ -63,8 +62,6 @@ export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
                 }
                 user.name = target.userName.value;
                 user.groups.push(newGroup);
-                 console.log(user.groups);
-                console.log(newGroup); 
                 addGroupToUser(user.id, user);
             }
         })
