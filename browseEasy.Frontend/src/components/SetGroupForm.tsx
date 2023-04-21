@@ -25,7 +25,7 @@ export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
     const activeUser = useContext(ActiveUserContext);
     const [values, setValues] = useState(initialValues);
     
-    const homePage = () => {
+    const preferencesPage = () => {
         openForm();
     }
 
@@ -43,6 +43,7 @@ export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
         } else {
             setValues({...values, foundGroup: false})
         }});
+        console.log(target.groupName.value);
         setValues({
         ...values,
         userName: target.userName.value,
@@ -55,16 +56,18 @@ export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
         if (initialValues.foundGroup) {
+            console.log("found Group");
             groups.map(group => {
                 if (group.uniqueKey == initialValues.uniqueKey && initialValues.uniqueKey == initialValues.foundGroupKey) {
                     users.map(user => {
                         if (user.loginId === activeUser.id) {
                             user.groups.push(group);
+                            console.log(user.groups);
                             addGroupToUser(user.id, user);
                         }
                     })
                 }})
-            homePage();
+            preferencesPage();
             return;
         }
         users.map(user => {
@@ -74,10 +77,11 @@ export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
                     uniqueKey: initialValues.newUniqueKey
                 }
                 user.groups.push(newGroup);
+                console.log(user.groups);
                 addGroupToUser(user.id, user);
             }
         })
-        homePage();
+        preferencesPage();
     }
 
     const addGroupToUser = async (id: number, user: IUser) => {
@@ -91,9 +95,9 @@ export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
         <h2>Hi {activeUser.name}! Let's get you set up.</h2>
         <form className="group-form" onSubmit={handleSubmit}>
             <label>Your name</label>
-            <input placeholder={activeUser.name} type="text" name="userName" onChange={handleChange}></input>
+            <input type="text" name="userName" onChange={handleChange} placeholder={activeUser.name}></input>
             <label>Your group name:</label>
-            <input name="groupName" onChange={handleChange}></input>
+            <input type="text" name="groupName" onChange={handleChange}></input>
             {initialValues.foundGroup && 
             <>
             <label>We already found one! Do you have the unique key?</label>
