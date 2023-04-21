@@ -33,8 +33,8 @@ export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
         const target = e.target as typeof e.target & {
         userName: { value: string };
         groupName: { value: string };
-        newUniqueKey: { value: string };
-        uniqueKey: { value: string };
+        newUniqueKey: { value: string | undefined };
+        uniqueKey: { value: string | undefined };
         };
 
         groups.map(group => {
@@ -43,43 +43,44 @@ export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
         } else {
             setValues({...values, foundGroup: false})
         }});
-
         setValues({
         ...values,
         userName: target.userName.value,
         groupName: target.groupName.value,
-        newUniqueKey: target.newUniqueKey.value,
-        uniqueKey: target.uniqueKey.value,
+        newUniqueKey: target.newUniqueKey.value === undefined ? "" : target.newUniqueKey.value,
+        uniqueKey: target.uniqueKey.value === undefined ? "" : target.uniqueKey.value,
         });
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = (e: SyntheticEvent) => {
+        e.preventDefault();
         if (initialValues.foundGroup) {
             groups.map(group => {
                 if (group.uniqueKey == initialValues.uniqueKey && initialValues.uniqueKey == initialValues.foundGroupKey) {
                     users.map(user => {
                         if (user.loginId === activeUser.id) {
                             user.groups.push(group);
-                            putUsersInDb(user.id, user);
+                            addGroupToUser(user.id, user);
                         }
                     })
                 }})
+            homePage();
             return;
         }
         users.map(user => {
             if (user.loginId === activeUser.id) {
                 const newGroup : IGroup = {
-                    id: 0,
                     name: initialValues.groupName,
                     uniqueKey: initialValues.newUniqueKey
                 }
                 user.groups.push(newGroup);
-                putUsersInDb(user.id, user);
+                addGroupToUser(user.id, user);
             }
         })
+        homePage();
     }
 
-    const putUsersInDb = async (id: number, user: IUser) => {
+    const addGroupToUser = async (id: number, user: IUser) => {
         await putUsers(id, user);
     }
 
@@ -105,7 +106,7 @@ export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
             <input type="text" name="newUniqueKey" onChange={handleChange}></input>
             </>
             }
-        <button type="submit" onClick={homePage}>Go to preferences</button>
+            <button type="submit">Go to preferences</button>
         </form>
         </>}
     </>

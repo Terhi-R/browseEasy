@@ -37,10 +37,21 @@ export const postUsers = async (newUser: Partial<IUser>) => {
 };
 
 export const putUsers = async (id: number, editedUser: Partial<IUser>) => {
+  const request = {
+    name: editedUser.name,
+    loginId: editedUser.loginId,
+    platforms: editedUser.platforms,
+    type: editedUser.type,
+    IMDbRating: editedUser.IMDbRating,
+    genres: editedUser.genres,
+    groups: editedUser.groups,
+    movies: editedUser.movies
+  }
+
   const user: IUser[] = await fetch(
     `https://browseeasyapi.azurewebsites.net/api/Users/${id}`, {
         method: "PUT",
-        body: JSON.stringify(editedUser),
+        body: JSON.stringify(request),
         headers: {
         "content-type": "application/json",
         "access-control-allow-origin": "*",
