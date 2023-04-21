@@ -20,6 +20,7 @@ export const getUser = async (id: number) => {
 };
 
 export const postUsers = async (newUser: Partial<IUser>) => {
+    console.log(newUser.loginId);
   const user: IUser[] = await fetch(
     `https://browseeasyapi.azurewebsites.net/api/Users`, {
         method: "POST",
