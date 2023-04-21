@@ -37,20 +37,23 @@ export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
         uniqueKey: { value: string | undefined };
         };
 
-        groups.map(group => {
-            if (group.name == target.groupName.value) {
-            setValues({...values, foundGroup: true, foundGroupKey: group.uniqueKey!})
-        } else {
-            setValues({...values, foundGroup: false})
-        }});
-        console.log(target.groupName.value);
-        setValues({
-        ...values,
-        userName: target.userName.value,
-        groupName: target.groupName.value,
-        newUniqueKey: target.newUniqueKey.value === undefined ? "" : target.newUniqueKey.value,
-        uniqueKey: target.uniqueKey.value === undefined ? "" : target.uniqueKey.value,
-        });
+        if (target.groupName !== undefined && target.groupName.value.length > 0) {
+            groups.map(group => {
+                if (group.name == target.groupName.value) {
+                setValues({...values, foundGroup: true, foundGroupKey: group.uniqueKey!})
+                } else {
+                    setValues({...values, foundGroup: false})
+                }});
+            console.log(target.groupName.value);
+            setValues({
+            ...values,
+            userName: target.userName.value,
+            groupName: target.groupName.value,
+            newUniqueKey: target.newUniqueKey.value === undefined ? "" : target.newUniqueKey.value,
+            uniqueKey: target.uniqueKey.value === undefined ? "" : target.uniqueKey.value,
+            });
+        }
+
     }
 
     const handleSubmit = (e: SyntheticEvent) => {
@@ -73,8 +76,8 @@ export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
         users.map(user => {
             if (user.loginId === activeUser.id) {
                 const newGroup : IGroup = {
-                    name: initialValues.groupName,
-                    uniqueKey: initialValues.newUniqueKey
+                    name: "test",
+                    uniqueKey: "testpassword"
                 }
                 user.groups.push(newGroup);
                 console.log(user.groups);
@@ -95,7 +98,7 @@ export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
         <h2>Hi {activeUser.name}! Let's get you set up.</h2>
         <form className="group-form" onSubmit={handleSubmit}>
             <label>Your name</label>
-            <input type="text" name="userName" onChange={handleChange} placeholder={activeUser.name}></input>
+            <input type="text" name="userName" onChange={handleChange} value={activeUser.name}></input>
             <label>Your group name:</label>
             <input type="text" name="groupName" onChange={handleChange}></input>
             {initialValues.foundGroup && 

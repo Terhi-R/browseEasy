@@ -43,24 +43,21 @@ export const putUsers = async (id: number, editedUser: Partial<IUser>) => {
     platforms: editedUser.platforms,
     type: editedUser.type,
     IMDbRating: editedUser.IMDbRating,
-    genres: editedUser.genres,
+    genres: editedUser.genres, 
     groups: editedUser.groups,
-    movies: editedUser.movies
+    movies: editedUser.movies 
   }
 
-  const user: IUser[] = await fetch(
-    `https://browseeasyapi.azurewebsites.net/api/Users/${id}`, {
+  await fetch(
+    `https://localhost:7233/api/Users/${id}`, {
+/*     `https://browseeasyapi.azurewebsites.net/api/Users/${id}`, { */
         method: "PUT",
         body: JSON.stringify(request),
         headers: {
         "content-type": "application/json",
-        "access-control-allow-origin": "*",
-        }
+        },
     }
   )
-    .then((response) => response.json())
-    .then((data) => data);
-  return user;
 };
 
 export const deleteUsers = async (id: number) => {

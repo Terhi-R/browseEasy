@@ -11,8 +11,5 @@ public class Group
 
     [Required]
     public string UniqueKey { get; set; }
-    
-    [Required]
-    public List<User> Users { get; set; }
-
+    public List<User>? Users { get; set; }
 }
