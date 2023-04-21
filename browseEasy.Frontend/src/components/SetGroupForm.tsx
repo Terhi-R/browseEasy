@@ -3,7 +3,8 @@ import "../stylesheets/SetGroupForm.css"
 import firebase from 'firebase/compat/app';
 import { GroupContext, UserContext } from "../App";
 import { putUsers } from "../services/api";
-import { IUser } from "../services/interfaces";
+import { IGroup, IUser } from "../services/interfaces";
+import { ActiveUserContext } from "./PageController";
 
 type SetGroupFormProps = {
     openForm: () => void
@@ -13,8 +14,10 @@ export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
     const [googleUser, setUser] = useState<any>(null);
     const users = useContext(UserContext);
     const groups = useContext(GroupContext);
+    const activeUser = useContext(ActiveUserContext);
     const [foundGroup, setFoundGroup] = useState<boolean>(false);
     const [foundGroupKey, setFoundGroupKey] = useState<string>();
+    const [newGroupName, setNewGroupName] = useState<string>();
     const [userName, setUserName] = useState<string>();
     const [newUniqueKey, setNewUniqueKey] = useState<string>();
     const [uniqueKey, setUniqueKey] = useState<string>();
@@ -31,6 +34,7 @@ export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
             setFoundGroupKey(group.uniqueKey);
         } else {
             setFoundGroup(false);
+            setNewGroupName(current.value);
         }})
     }
 
@@ -38,18 +42,32 @@ export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
         if (foundGroup) {
             groups.map(group => {
                 if (group.uniqueKey == uniqueKey && uniqueKey == foundGroupKey) {
-               /*      await putUsers() */
+                    users.map(user => {
+                        if (user.loginId === activeUser.id) {
+                            user.groups.push(group);
+                            putUsersInDb(user.id, user);
+                        }
+                    })
                 }})
+            return;
         }
+        users.map(user => {
+            if (user.loginId === activeUser.id) {
+                const newGroup : IGroup = {
+                    id: 0,
+                    name: newGroupName,
+                    uniqueKey: newUniqueKey
+                }
+                user.groups.push(newGroup);
+                putUsersInDb(user.id, user);
+            }
+        })
     }
 
-    const putUsers = async (id: number, user: IUser) => {
+    const putUsersInDb = async (id: number, user: IUser) => {
         await putUsers(id, user);
     }
-/*       const getallUsers = async() => {
-    const users = await getUsers();
-    setUsers(users);
-  } */
+
     useEffect(() => {
         firebase.auth().onAuthStateChanged(googleUser => {
         setUser(googleUser);
@@ -63,7 +81,7 @@ export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
         <h2>Hi {googleUser.displayName.split(' ')[0]}! Let's get you set up.</h2>
         <form className="group-form" onSubmit={handleSubmit}>
             <label>Your name</label>
-            <input placeholder="[Name]" type="text" onChange={(e) => {setUserName(e.target.value)}}></input>
+            <input placeholder={activeUser.name} type="text" onChange={(e) => {activeUser.name = e.target.value}}></input>
             <label>Your group name:</label>
             <input onChange={handleChange}></input>
             {foundGroup && 

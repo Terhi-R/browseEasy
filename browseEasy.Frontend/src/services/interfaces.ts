@@ -27,8 +27,8 @@ export interface IMovie {
 
 export interface IGroup {
     id: number,
-    name: string,
-    uniqueKey: string
+    name: string | undefined,
+    uniqueKey: string | undefined
 }
 
 export interface IActiveUser {
