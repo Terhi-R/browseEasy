@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from "react"
+import { FC, SyntheticEvent, useContext, useEffect, useState } from "react"
 import "../stylesheets/SetGroupForm.css"
 import firebase from 'firebase/compat/app';
 import { GroupContext, UserContext } from "../App";
@@ -10,38 +10,53 @@ type SetGroupFormProps = {
     openForm: () => void
 }
 
+const initialValues = {
+  userName: "",
+  groupName: "",
+  newUniqueKey: "",
+  foundGroupKey: "",
+  uniqueKey: "",
+  foundGroup: false,
+};
+
 export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
-    const [googleUser, setUser] = useState<any>(null);
     const users = useContext(UserContext);
     const groups = useContext(GroupContext);
     const activeUser = useContext(ActiveUserContext);
-    const [foundGroup, setFoundGroup] = useState<boolean>(false);
-    const [foundGroupKey, setFoundGroupKey] = useState<string>();
-    const [newGroupName, setNewGroupName] = useState<string>();
-    const [userName, setUserName] = useState<string>();
-    const [newUniqueKey, setNewUniqueKey] = useState<string>();
-    const [uniqueKey, setUniqueKey] = useState<string>();
+    const [values, setValues] = useState(initialValues);
     
     const homePage = () => {
         openForm();
     }
 
-    const handleChange = (event: any) => {
-        const current = {value: event.target.value};
+    const handleChange = (e: SyntheticEvent) => {
+        const target = e.target as typeof e.target & {
+        userName: { value: string };
+        groupName: { value: string };
+        newUniqueKey: { value: string };
+        uniqueKey: { value: string };
+        };
+
         groups.map(group => {
-            if (group.name == current.value) {
-            setFoundGroup(true);
-            setFoundGroupKey(group.uniqueKey);
+            if (group.name == target.groupName.value) {
+            setValues({...values, foundGroup: true, foundGroupKey: group.uniqueKey!})
         } else {
-            setFoundGroup(false);
-            setNewGroupName(current.value);
-        }})
+            setValues({...values, foundGroup: false})
+        }});
+
+        setValues({
+        ...values,
+        userName: target.userName.value,
+        groupName: target.groupName.value,
+        newUniqueKey: target.newUniqueKey.value,
+        uniqueKey: target.uniqueKey.value,
+        });
     }
 
     const handleSubmit = () => {
-        if (foundGroup) {
+        if (initialValues.foundGroup) {
             groups.map(group => {
-                if (group.uniqueKey == uniqueKey && uniqueKey == foundGroupKey) {
+                if (group.uniqueKey == initialValues.uniqueKey && initialValues.uniqueKey == initialValues.foundGroupKey) {
                     users.map(user => {
                         if (user.loginId === activeUser.id) {
                             user.groups.push(group);
@@ -55,8 +70,8 @@ export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
             if (user.loginId === activeUser.id) {
                 const newGroup : IGroup = {
                     id: 0,
-                    name: newGroupName,
-                    uniqueKey: newUniqueKey
+                    name: initialValues.groupName,
+                    uniqueKey: initialValues.newUniqueKey
                 }
                 user.groups.push(newGroup);
                 putUsersInDb(user.id, user);
@@ -68,32 +83,26 @@ export const SetGroupForm: FC<SetGroupFormProps> = ({openForm}) => {
         await putUsers(id, user);
     }
 
-    useEffect(() => {
-        firebase.auth().onAuthStateChanged(googleUser => {
-        setUser(googleUser);
-    })
-    },[])
-
     return (
     <>
-       {googleUser !== null && 
+       {activeUser.id !== null && 
         <>
-        <h2>Hi {googleUser.displayName.split(' ')[0]}! Let's get you set up.</h2>
+        <h2>Hi {activeUser.name}! Let's get you set up.</h2>
         <form className="group-form" onSubmit={handleSubmit}>
             <label>Your name</label>
-            <input placeholder={activeUser.name} type="text" onChange={(e) => {activeUser.name = e.target.value}}></input>
+            <input placeholder={activeUser.name} type="text" name="userName" onChange={handleChange}></input>
             <label>Your group name:</label>
-            <input onChange={handleChange}></input>
-            {foundGroup && 
+            <input name="groupName" onChange={handleChange}></input>
+            {initialValues.foundGroup && 
             <>
             <label>We already found one! Do you have the unique key?</label>
-            <input type="text" onChange={(e) => {setUniqueKey(e.target.value)}}></input>
+            <input type="text" name="uniqueKey" onChange={handleChange}></input>
             </>
             }
-            {!foundGroup && 
+            {!initialValues.foundGroup && 
             <>
             <label>Create unique group keyword:</label>
-            <input type="text" onChange={(e) => {setNewUniqueKey(e.target.value)}}></input>
+            <input type="text" name="newUniqueKey" onChange={handleChange}></input>
             </>
             }
         <button type="submit" onClick={homePage}>Go to preferences</button>
