@@ -1,16 +1,15 @@
 import { FC, useContext, useState } from "react";
 import { auth, signInWithGoogle } from '../services/firebase';
 import { UserContext } from "../App";
-import { IUser } from "../services/interfaces";
+import { IActiveUser, IUser } from "../services/interfaces";
 import { postUsers } from "../services/api";
 
 type HeaderProps = {
     openForm: () => void
+    activeUser: (user: IActiveUser) => void
 }
 
-export const Header: FC<HeaderProps> = ({openForm}) => {
-    const users = useContext(UserContext);
-
+export const Header: FC<HeaderProps> = ({openForm, activeUser}) => {
     const login = () => {
     signInWithGoogle();
     auth.onAuthStateChanged(user => {
@@ -20,14 +19,18 @@ export const Header: FC<HeaderProps> = ({openForm}) => {
                 loginId: user.uid
             }
             postUsers(newUser);
-        } 
+            const setActiveUser = {
+                id: user.uid,
+                name: user.displayName
+            }
+            activeUser(setActiveUser);
+        }
+        openForm();
     })
-    openForm();
     }
 
     return (
         <>
-       {users.map(user => user.loginId)}
         <p>Home!</p>
         <button onClick={login}>Get started</button>
         </>

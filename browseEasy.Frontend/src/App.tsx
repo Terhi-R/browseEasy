@@ -7,24 +7,33 @@ import { PageController } from './components/PageController';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Settings } from './components/Settings';
 import { About } from './components/About';
-import { Header } from './components/Header';
 
 export const UserContext = createContext<IUser[]>([]);
+export const GroupContext = createContext<IGroup[]>([]);
 
 function App() {
-const [users, setUsers] = useState<IUser[]>([]);
+  const [users, setUsers] = useState<IUser[]>([]);
+  const [groups, setGroups] = useState<IGroup[]>([]);
+
 
   const getallUsers = async() => {
     const users = await getUsers();
     setUsers(users);
   }
 
+  const getallGroups = async() => {
+    const groups = await getGroups();
+    setGroups(groups);
+  }
+
   useEffect(() => {
     getallUsers();
+    getallGroups();
   },[])
 
   return (
     <UserContext.Provider value={users}>
+    <GroupContext.Provider value={groups}>
         <Navbar/>
         <Routes location={location} key={location.pathname}>
           <Route
@@ -44,6 +53,7 @@ const [users, setUsers] = useState<IUser[]>([]);
             element={<Navigate to="/" replace={true} />}
           ></Route>
         </Routes>
+    </GroupContext.Provider>
     </UserContext.Provider>
   )
 }
