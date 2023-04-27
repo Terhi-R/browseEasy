@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "n+H27vZ+58QDTa/QWJJTTag8ADgu384gnJ5P4Z9lMi8R9cBDOn2XIMBHoxB6cr5NnPG9YyzpyDHJhmJEm9YhCQ==",
+  "dgSpecHash": "TmtR6akLlt4jwIlR3y+V6WqqDalo9TfCSA58f2YI1nqmGczVcjrMLxlNMGrIeDjGUTCRbH8vt8WnVnnZ9A955w==",
   "success": true,
   "projectFilePath": "/Users/terhiraudaskoski/Documents/GitHubProjects/browseEasy/browseEasy.Tests/browseEasy.Tests.csproj",
   "expectedPackageFiles": [
@@ -224,7 +224,9 @@
     "/Users/terhiraudaskoski/.nuget/packages/xunit.core/2.4.1/xunit.core.2.4.1.nupkg.sha512",
     "/Users/terhiraudaskoski/.nuget/packages/xunit.extensibility.core/2.4.1/xunit.extensibility.core.2.4.1.nupkg.sha512",
     "/Users/terhiraudaskoski/.nuget/packages/xunit.extensibility.execution/2.4.1/xunit.extensibility.execution.2.4.1.nupkg.sha512",
-    "/Users/terhiraudaskoski/.nuget/packages/xunit.runner.visualstudio/2.4.3/xunit.runner.visualstudio.2.4.3.nupkg.sha512"
+    "/Users/terhiraudaskoski/.nuget/packages/xunit.runner.visualstudio/2.4.3/xunit.runner.visualstudio.2.4.3.nupkg.sha512",
+    "/Users/terhiraudaskoski/.nuget/packages/microsoft.netcore.app.ref/6.0.16/microsoft.netcore.app.ref.6.0.16.nupkg.sha512",
+    "/Users/terhiraudaskoski/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.16/microsoft.aspnetcore.app.ref.6.0.16.nupkg.sha512"
   ],
   "logs": []
 }

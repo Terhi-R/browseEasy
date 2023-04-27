@@ -25,6 +25,7 @@ public abstract class browseEasyUnitTests
             var firstUser = new User
             {
                 Name = "Marta",
+                LoginId = "abc5kgd",
                 Platforms = new List<Platform>
             {
                 new Platform
@@ -65,6 +66,7 @@ public abstract class browseEasyUnitTests
             var secondUser = new User
             {
                 Name = "Mattea",
+                LoginId = "defg9sey",
                 Platforms = new List<Platform>
             {
                 new Platform
@@ -106,6 +108,7 @@ public abstract class browseEasyUnitTests
     UserRequest newUser = new UserRequest
     {
         Name = "Hilla",
+        LoginId = "ghij05uk",
         Platforms = new List<Platform>
             {
                 new Platform
@@ -146,6 +149,7 @@ public abstract class browseEasyUnitTests
     UserRequest otherUser = new UserRequest
     {
         Name = "Henrik",
+        LoginId = "lmno83dg",
         Platforms = new List<Platform>
             {
                 new Platform
